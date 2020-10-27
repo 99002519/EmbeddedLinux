@@ -1,0 +1,115 @@
+---------------------------------
+Application
+---------------------------------
+Middle ware ---> User defined API
+---------------------------------
+OS + Drivers --- 1. User defined drivers, 2. Kernel drivers
+---------------------------------
+Hardware
+---------------------------------
+
+* * * Beaglebone black board - Debian OS * * *
+
+# What is BeagleBone Black?
+BeagleBone Black is a low-cost, community-supported development platform for developers and hobbyists. 
+Boot Linux in under 10 seconds and get started on development in less than 5 minutes with just a single USB cable.
+
+# Processor: AM335x 1GHz ARM® Cortex-A8
+	512MB DDR3 RAM
+	4GB 8-bit eMMC on-board flash storage
+	3D graphics accelerator
+	NEON floating-point accelerator
+	2x PRU 32-bit microcontrollers
+
+# Connectivity
+	USB client for power & communications
+	USB host
+	Ethernet
+	HDMI
+	2x 46 pin headers
+
+# Software Compatibility
+	Debian
+	Android
+	Ubuntu
+	Cloud9 IDE on Node.js w/ BoneScript library
+	plus much more
+
+# Beaglebone black board --- .org -----> all details
+
+# Controller vs Proc
+
+# https://www.ti.com/product/AM3359 -- Download
+
+# eMMC ( embedded Multi-Media Controller ) 
+	- 4GB - Debian OS
+	- 2GB - Angstrom OS (Lite version)
+
+# MyBoard Configuration :
+	Part no. of SOC : U5
+	Part no. of eMMC : U13
+	Proc : XAM3359AZCZI00
+	UART : J1
+	Boot : S2
+	LEDs : D2-D5
+	Power : S3
+	Reset : S1
+	Memory Card : P10
+	DDR3 : U12 (Kingston - D2516EC4BXGGB)
+
+# Powering BBB board :
+	1. Through Mini USB port - P4
+	2. DC power adapter - DC Barrel Plug 5.5mm/2.1mm ( Recommended 5V @ 2A )
+	   5V - fixed oper vol, oper curr - 1.2A to 2A
+
+# Connection to Serial Debug with USB to TTL converter 
+	Red - +5V
+	Black - GND
+	Green - TxD
+	White - RxD
+	
+	Connect it cross like RxD to TxD & TxD to RxD 
+# Open terminal & install minicom using command
+	sudo apt-get install minicom
+	Then make some changes using sudo minicom -s
+
+# ( REFER AFREED's NOTES )
+
+# Configuration (Block Diagram) :
+
+	128KB of RAM (64KB of shared RAM & 64KB of SOC RAM)
+	176KB of ROM
+	32KB L1 & 256KB L2 cache
+	S/m bus - Interconnects L3 & L4 (L3 - High s/m bus - High transactions, L4 - Low s/m bus - Peripherals)
+	In L3 & L4 - peripherals like SERIAL (6 UARTs, 2 SPIs, 3 I2Cs, USB 2.0, 2 CANs) 
+		   - SYSTEM (8 Timers, RTC, eDMA, WDT, PRCM, Crystal Osc - 24MHz(enhanced upto 1GHz using PLL engines),
+		   	     JTAG, ADC 12-bit(8 channel), 3 eCAP)
+		   - PARALLEL (3(MMC, SD, SDIO), GPIO) 
+		   - MEMORY INTERFACE (mDDR(LPDDR), DDR2, DDR3, DDR3L (16-bit 200,266,400,400 MHz),
+		                      NAND & NOR (16-bit ECC))
+
+# MMC 
+	* MMC0 & MMC1 are parallel transactions ( 8-bits )
+	* Shift from MMC0 to MMC1 is using S2; Default is eMMC 
+	* MMC0 is connected to Micro SD card P10
+	* MMC1 is connected to eMMC U13 - NAND based - 4GB
+	* In SCH doc we can get part numbers and what connected to it
+
+# TASK : TO FIND OTHER PART NUMBERS, DEVICES, SCH DIAGRAMS, etc
+
+# Beaglebone Linux Booting Process 
+	3 stages are involved in booting process
+	 1. RBL : ROM Boot Loader - From reset vector - RBL -> From where to load OS - Diagram in ppt (27/77) - BOOTLOADER STAGE
+	    SPL : Sec Prgm Loader - Finds images/bootfiles images (mem loc) - from where to boot - BOOTLOADER STAGE
+	    MLO : Mem Loader - If we add mem loc to boot image (Zee image) - then MLO, only Zee image is SPL - BOOTLOADER STAGE
+	 2. U-Boot : To load & run the Linux kernel - It will take image from mem loc & do WDT, GPIO initialize, Timers - configs initializations
+	 	      After that, handover to Linux - takes help from root filesystem - First thing - Login & pwd - KERNEL STAGE
+	 3. USER STAGE : To Linux OS
+
+# Other booting options
+	AM335x SOC booting can be done from :
+	  NAND flash, NOR flash, USB, eMMC, SD card, Ethernet, UART, SPI
+	  That means w ecan keep boot images in any of the memory/peripheral & can be able to boot this SOC.
+
+
+
