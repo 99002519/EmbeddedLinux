@@ -1,0 +1,58 @@
+1. => mmcinfo     
+	Device: OMAP SD/MMC
+	Manufacturer ID: 0
+	OEM: 3000
+	Name: APPSD 
+	Tran Speed: 50000000
+	Rd Block Len: 512
+	SD version 2.0
+	High Capacity: Yes
+	Capacity: 15 GiB
+	Bus Width: 4-bit
+	Erase Group Size: 512 Bytes
+	
+2. => base
+	Base Address: 0x00000000
+
+3. =>version 
+	U-Boot 2017.05-rc2 (May 02 2017 - 08:53:40 +0530)
+	arm-linux-gnueabihf-gcc (Linaro GCC 6.3-2017.02) 6.3.1 20170109
+	GNU ld (Linaro_Binutils-2017.02) 2.27.0.20161019
+ 
+4. => fatinfo mmc 0:1
+	Interface:  MMC
+	Device 0: Vendor: Man 000000 Snr 80000601 Rev: 1.2 Prod: APPSD
+		    Type: Removable Hard Disk
+		    Capacity: 15360.0 MB = 15.0 GB (31457280 x 512)
+	Filesystem: FAT16 "BOOT       "
+	
+5. => fatls mmc 0:1
+	    72320   mlo 
+	   367496   u-boot.img 
+	      370   uenv.txt 
+
+	   3 file(s), 0 dir(s)
+	   
+6. => echo "message"
+	message
+   => echo message2
+   	message2
+   	
+7. => sleep 5
+	sleeps for 5 seconds
+	
+	
+8. => ls <interface> [<dev[:part]> [directory]]
+    - List files in directory 'directory' of partition 'part' on
+      device type 'interface' instance 'dev'.
+   => ls mmc 0   
+	    72320   mlo 
+	   367496   u-boot.img 
+	      370   uenv.txt 
+
+	3 file(s), 0 dir(s)
+	
+
+
+
+
